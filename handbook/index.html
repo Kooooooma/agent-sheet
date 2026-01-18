@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="2026 AI编程工具实战手册 - 深度对比GitHub Copilot、Cursor、Antigravity">
+  <title>2026 AI编程工具实战手册</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" id="navbar">
+    <div class="nav__container">
+      <a href="#" class="nav__logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#g)" />
+          <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" stroke="white" stroke-width="2" stroke-linejoin="round" />
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#1E40AF" />
+              <stop offset="100%" stop-color="#9333EA" />
+            </linearGradient>
+          </defs>
+        </svg>
+        AI编程工具手册
+      </a>
+      <div class="nav__toggle">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="5" />
+          </svg>
+          <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Docs Layout -->
+  <div class="docs-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__section">
+        <div class="sidebar__title">第一章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch1" class="sidebar__link active">规则系统</a></li>
+          <li><a href="#ch1-cursor" class="sidebar__sublink">Cursor 规则</a></li>
+          <li><a href="#ch1-copilot" class="sidebar__sublink">Copilot 指令</a></li>
+          <li><a href="#ch1-antigravity" class="sidebar__sublink">Antigravity 规则</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__title">第二章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch2" class="sidebar__link">命令系统</a></li>
+          <li><a href="#ch2-cursor" class="sidebar__sublink">Cursor Commands</a></li>
+          <li><a href="#ch2-copilot" class="sidebar__sublink">Copilot Prompts</a></li>
+          <li><a href="#ch2-antigravity" class="sidebar__sublink">Antigravity Workflows</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__title">第三章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch3" class="sidebar__link">技能系统</a></li>
+          <li><a href="#ch3-copilot" class="sidebar__sublink">Copilot Skills</a></li>
+          <li><a href="#ch3-cursor" class="sidebar__sublink">Cursor Skills</a></li>
+          <li><a href="#ch3-antigravity" class="sidebar__sublink">Antigravity Skills</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__title">第四章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch4" class="sidebar__link">子智能体</a></li>
+          <li><a href="#ch4-cursor" class="sidebar__sublink">Cursor Subagents</a></li>
+          <li><a href="#ch4-copilot" class="sidebar__sublink">Copilot Custom Agents</a></li>
+          <li><a href="#ch4-antigravity" class="sidebar__sublink">Antigravity Browser Agent</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__title">第五章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch5" class="sidebar__link">Mentions</a></li>
+          <li><a href="#ch5-cursor" class="sidebar__sublink">Cursor @引用</a></li>
+          <li><a href="#ch5-copilot" class="sidebar__sublink">Copilot #引用</a></li>
+          <li><a href="#ch5-antigravity" class="sidebar__sublink">Antigravity @引用</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <div class="sidebar__title">第六章</div>
+        <ul class="sidebar__nav">
+          <li><a href="#ch6" class="sidebar__link">MCP协议</a></li>
+          <li><a href="#ch6-cursor" class="sidebar__sublink">Cursor MCP</a></li>
+          <li><a href="#ch6-copilot" class="sidebar__sublink">Copilot MCP</a></li>
+          <li><a href="#ch6-antigravity" class="sidebar__sublink">Antigravity MCP Store</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="main-content__inner">
+
+        <!-- Chapter 1: Rules -->
+        <section id="ch1" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第一章</span>
+            <h1>规则系统 (Rules)</h1>
+          </div>
+
+          <p class="chapter-intro">规则为 Agent 提供系统级指令，在提示级别提供持久、可重用的上下文。三款工具都支持多层级规则，但配置方式不同。</p>
+
+          <div class="content-block">
+            <h2>三工具规则层级对比</h2>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>层级</th>
+                    <th><span class="tool-badge cursor">Cursor</span></th>
+                    <th><span class="tool-badge copilot">Copilot</span></th>
+                    <th><span class="tool-badge antigravity">Antigravity</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>全局/个人</td>
+                    <td>Settings → Rules (User Rules)</td>
+                    <td>Profile → Personal Instructions</td>
+                    <td><code>~/.gemini/GEMINI.md</code></td>
+                  </tr>
+                  <tr>
+                    <td>项目/仓库</td>
+                    <td><code>.cursor/rules/*.mdc</code></td>
+                    <td><code>.github/copilot-instructions.md</code></td>
+                    <td><code>.agent/rules/*.md</code></td>
+                  </tr>
+                  <tr>
+                    <td>路径特定</td>
+                    <td>globs 字段匹配</td>
+                    <td><code>.github/instructions/*.instructions.md</code></td>
+                    <td>Glob激活方式</td>
+                  </tr>
+                  <tr>
+                    <td>团队/组织</td>
+                    <td>Dashboard Team Rules</td>
+                    <td>Organization Settings</td>
+                    <td>通过Git共享</td>
+                  </tr>
+                  <tr>
+                    <td>优先级</td>
+                    <td>Team → Project → User</td>
+                    <td>Personal → Repository → Organization</td>
+                    <td>Workspace → Global</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Cursor Rules Detail -->
+          <div id="ch1-cursor" class="content-block">
+            <h2><span class="tool-badge cursor">Cursor</span> 规则详解</h2>
+
+            <h3>文件位置</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">项目结构</span></div>
+              <pre><code>project/
+├── .cursor/
+│   └── rules/
+│       ├── react-patterns.mdc    # 带frontmatter的规则
+│       ├── api-guidelines.md     # 纯markdown规则
+│       └── frontend/
+│           └── components.md     # 子目录组织
+├── AGENTS.md                     # 根目录Agent指令(可选)
+└── .cursorrules                  # 旧版(即将废弃)</code></pre>
+            </div>
+
+            <h3>四种激活方式</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>frontmatter配置</th>
+                    <th>触发条件</th>
+                    <th>使用场景</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Always Apply</strong></td>
+                    <td><code>alwaysApply: true</code></td>
+                    <td>每个聊天会话自动应用</td>
+                    <td>通用编码规范、项目约定</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Apply Intelligently</strong></td>
+                    <td><code>alwaysApply: false</code> + <code>description</code></td>
+                    <td>Agent根据description判断相关性</td>
+                    <td>特定功能模块的规范</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Apply to Specific Files</strong></td>
+                    <td><code>globs: ["pattern"]</code></td>
+                    <td>当前文件匹配glob模式</td>
+                    <td>API文件、测试文件规范</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Apply Manually</strong></td>
+                    <td>无特殊配置</td>
+                    <td>在对话中 <code>@rule-name</code> 手动触发</td>
+                    <td>按需调用的模板</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Glob 语法详解</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>模式</th>
+                    <th>匹配范围</th>
+                    <th>示例匹配</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>*</code></td>
+                    <td>当前目录所有文件</td>
+                    <td><code>foo.ts</code>, <code>bar.js</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>**</code> 或 <code>**/*</code></td>
+                    <td>所有目录所有文件</td>
+                    <td>递归所有文件</td>
+                  </tr>
+                  <tr>
+                    <td><code>*.py</code></td>
+                    <td>当前目录 .py 文件</td>
+                    <td><code>main.py</code>, <code>utils.py</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>**/*.py</code></td>
+                    <td>递归匹配所有 .py</td>
+                    <td><code>src/main.py</code>, <code>lib/util.py</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>src/**/*.ts</code></td>
+                    <td>src下递归匹配.ts</td>
+                    <td><code>src/index.ts</code>, <code>src/utils/helper.ts</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>**/*.{ts,tsx}</code></td>
+                    <td>多扩展名匹配</td>
+                    <td>所有 .ts 和 .tsx 文件</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>完整配置示例</h3>
+            <h4>示例1: Always Apply (通用规范)</h4>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.cursor/rules/coding-standards.mdc</span></div>
+              <pre><code>---
+description: "项目通用编码规范"
+alwaysApply: true
+---
+
+# 编码规范
+
+- 使用 TypeScript 编写所有新文件
+- 使用函数式组件和 React Hooks
+- 数据库字段使用 snake_case
+- API 响应使用 camelCase
+- 所有导出函数必须有 JSDoc 注释</code></pre>
+            </div>
+
+            <h4>示例2: Apply to Specific Files (API规范)</h4>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.cursor/rules/api-guidelines.mdc</span>
+              </div>
+              <pre><code>---
+description: "API 开发规范，适用于 src/api 目录"
+alwaysApply: false
+globs: ["src/api/**/*.ts", "src/routes/**/*.ts"]
+---
+
+# API 开发规范
+
+- 使用 RESTful 命名约定
+- 所有端点必须有错误处理中间件
+- 返回格式: { success: boolean, data?: T, error?: string }
+- 参考 @src/api/template.ts 作为模板</code></pre>
+            </div>
+
+            <h4>示例3: Apply Intelligently (按需判断)</h4>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.cursor/rules/testing.mdc</span></div>
+              <pre><code>---
+description: "单元测试规范。当用户请求编写测试、test、jest、vitest相关内容时应用此规则。"
+alwaysApply: false
+---
+
+# 测试规范
+
+- 使用 Vitest 作为测试框架
+- 测试文件放在 __tests__ 目录
+- 命名格式: {filename}.test.ts
+- 每个函数至少3个测试用例: 正常、边界、异常</code></pre>
+            </div>
+
+            <h3>用户规则 (全局)</h3>
+            <p>在 <strong>Cursor Settings → Rules</strong> 中设置，适用于所有项目:</p>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">用户规则示例</span></div>
+              <pre><code>请以简洁风格回复。避免不必要的重复。
+使用中文回复技术问题。
+优先使用函数式编程范式。</code></pre>
+            </div>
+
+            <h3>团队规则 (Team/Enterprise)</h3>
+            <p>通过 <strong>Cursor Dashboard</strong> 管理，对所有团队成员生效:</p>
+            <ul>
+              <li><strong>立即启用</strong>: 创建后即时生效</li>
+              <li><strong>强制执行</strong>: 成员无法关闭</li>
+              <li><strong>优先级最高</strong>: Team → Project → User</li>
+            </ul>
+          </div>
+
+          <!-- Copilot Instructions Detail -->
+          <div id="ch1-copilot" class="content-block">
+            <h2><span class="tool-badge copilot">GitHub Copilot</span> 指令详解</h2>
+
+            <h3>三种指令类型</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>类型</th>
+                    <th>文件位置</th>
+                    <th>适用范围</th>
+                    <th>frontmatter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Repository-wide</strong></td>
+                    <td><code>.github/copilot-instructions.md</code></td>
+                    <td>整个仓库所有文件</td>
+                    <td>无</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Path-specific</strong></td>
+                    <td><code>.github/instructions/*.instructions.md</code></td>
+                    <td>匹配applyTo的文件</td>
+                    <td><code>applyTo: "glob"</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Agent指令</strong></td>
+                    <td><code>AGENTS.md</code> (任意位置)</td>
+                    <td>最近的AGENTS.md生效</td>
+                    <td>无</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Repository-wide 指令</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.github/copilot-instructions.md</span>
+              </div>
+              <pre><code># Project Overview
+
+This is a React + Node.js web application.
+
+## Tech Stack
+- Frontend: React 18, TypeScript, Tailwind CSS
+- Backend: Node.js, Express, PostgreSQL
+- Testing: Jest, React Testing Library
+
+## Coding Standards
+- Use semicolons at the end of statements
+- Use single quotes for strings
+- Use function-based React components
+- API responses follow { success, data, error } format</code></pre>
+            </div>
+
+            <h3>Path-specific 指令</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.github/instructions/backend.instructions.md</span></div>
+              <pre><code>---
+applyTo: "src/api/**/*.ts,src/services/**/*.ts"
+---
+
+# Backend Development Rules
+
+- Use dependency injection pattern
+- All database queries must use parameterized statements
+- Implement proper error handling with custom error classes
+- Log all API requests with request ID</code></pre>
+            </div>
+
+            <h3>Glob 语法示例</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>模式</th>
+                    <th>匹配范围</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>**/*.ts,**/*.tsx</code></td>
+                    <td>所有 TypeScript 文件</td>
+                  </tr>
+                  <tr>
+                    <td><code>app/models/**/*.rb</code></td>
+                    <td>Rails models 目录</td>
+                  </tr>
+                  <tr>
+                    <td><code>**/subdir/**/*.py</code></td>
+                    <td>任意深度 subdir 下的 .py</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>excludeAgent 配置</h3>
+            <p>控制指令适用于哪些 Agent:</p>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">仅适用于 Coding Agent</span></div>
+              <pre><code>---
+applyTo: "**"
+excludeAgent: "code-review"
+---
+这些指令只会被 Copilot Coding Agent 读取，
+Code Review 功能不会使用。</code></pre>
+            </div>
+
+            <h3>个人指令 (Personal Instructions)</h3>
+            <p>在 GitHub.com Copilot Chat 中设置，适用于所有仓库:</p>
+            <ol>
+              <li>打开 Copilot Chat</li>
+              <li>点击左下角头像 → Personal Instructions</li>
+              <li>添加个人偏好指令</li>
+            </ol>
+
+            <div class="alert-box warning">
+              <h4>⚠️ 概念辨析：AGENTS.md vs Custom Agents</h4>
+              <p>Copilot 中有两个容易混淆的概念，它们<strong>作用完全不同</strong>：</p>
+              <div class="comparison-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>对比项</th>
+                      <th>AGENTS.md</th>
+                      <th>Custom Agents</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>本质</strong></td>
+                      <td>指令文件 (Instructions)</td>
+                      <td>专业化智能体 (Agent)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>作用</strong></td>
+                      <td>为 Copilot 提供项目上下文和行为约束</td>
+                      <td>创建可 @ 提及的专业助手</td>
+                    </tr>
+                    <tr>
+                      <td><strong>文件位置</strong></td>
+                      <td><code>AGENTS.md</code> (项目根目录或子目录)</td>
+                      <td><code>.github/agents/*.md</code></td>
+                    </tr>
+                    <tr>
+                      <td><strong>触发方式</strong></td>
+                      <td>自动生效 (最近的 AGENTS.md 优先)</td>
+                      <td>在 Chat 中 <code>@agent-name</code> 手动触发</td>
+                    </tr>
+                    <tr>
+                      <td><strong>类比</strong></td>
+                      <td>相当于 Cursor 的 Project Rules</td>
+                      <td>相当于 Cursor 的 Subagents</td>
+                    </tr>
+                    <tr>
+                      <td><strong>应用场景</strong></td>
+                      <td>定义编码规范、项目约定、技术栈说明</td>
+                      <td>创建测试专家、文档专家等专业角色</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="margin-top: 1rem;"><strong>简单记忆</strong>：AGENTS.md 是"规则"，Custom Agents 是"角色"。</p>
+            </div>
+          </div>
+
+          <!-- Antigravity Rules Detail -->
+          <div id="ch1-antigravity" class="content-block">
+            <h2><span class="tool-badge antigravity">Antigravity</span> 规则详解</h2>
+
+            <h3>两层规则体系</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>层级</th>
+                    <th>文件位置</th>
+                    <th>作用范围</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Global</strong></td>
+                    <td><code>~/.gemini/GEMINI.md</code></td>
+                    <td>所有工作区</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Workspace</strong></td>
+                    <td><code>.agent/rules/*.md</code></td>
+                    <td>当前项目</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>激活方式</h3>
+            <p>在规则面板中可配置:</p>
+            <ul>
+              <li><strong>Manual</strong>: 通过 @rule-name 手动激活</li>
+              <li><strong>Always On</strong>: 始终应用</li>
+              <li><strong>Model Decision</strong>: 根据描述由模型判断</li>
+              <li><strong>Glob</strong>: 文件匹配模式激活</li>
+            </ul>
+
+            <h3>配置示例</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.agent/rules/coding-standards.md</span>
+              </div>
+              <pre><code># Coding Standards
+
+- Use Bazel for managing Java dependencies
+- JavaScript: double quotes and tabs
+- Track work items in Jira
+- All commits must reference a ticket number</code></pre>
+            </div>
+
+            <h3>@ 文件引用</h3>
+            <p>在规则中使用 <code>@filename</code> 引用其他文件:</p>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">引用语法</span></div>
+              <pre><code>遵循 @/docs/api-spec.md 中定义的 API 规范。
+参考 @templates/service.ts 作为服务模板。</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chapter 2: Commands -->
+        <section id="ch2" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第二章</span>
+            <h1>命令系统 (Commands)</h1>
+          </div>
+
+          <p class="chapter-intro">命令系统允许封装可复用的提示工作流，通过简单的前缀触发。三款工具实现方式不同。</p>
+
+          <div class="content-block">
+            <h2>三工具命令对比</h2>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>特性</th>
+                    <th><span class="tool-badge cursor">Cursor</span></th>
+                    <th><span class="tool-badge copilot">Copilot</span></th>
+                    <th><span class="tool-badge antigravity">Antigravity</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>名称</td>
+                    <td>Commands</td>
+                    <td>Prompt Files</td>
+                    <td>Workflows</td>
+                  </tr>
+                  <tr>
+                    <td>触发方式</td>
+                    <td><code>/command-name</code></td>
+                    <td>附加上下文选择</td>
+                    <td><code>/workflow-name</code></td>
+                  </tr>
+                  <tr>
+                    <td>文件位置</td>
+                    <td><code>.cursor/commands/*.md</code></td>
+                    <td><code>.github/prompts/*.prompt.md</code></td>
+                    <td><code>.agent/workflows/*.md</code></td>
+                  </tr>
+                  <tr>
+                    <td>文件引用</td>
+                    <td>不支持</td>
+                    <td>Markdown link / #file:</td>
+                    <td>@filename</td>
+                  </tr>
+                  <tr>
+                    <td>自动执行</td>
+                    <td>需确认</td>
+                    <td>需确认</td>
+                    <td><code>// turbo</code> 注解</td>
+                  </tr>
+                  <tr>
+                    <td>嵌套调用</td>
+                    <td>不支持</td>
+                    <td>不支持</td>
+                    <td>支持调用其他Workflow</td>
+                  </tr>
+                  <tr>
+                    <td>团队共享</td>
+                    <td>Dashboard Team Commands</td>
+                    <td>Git提交</td>
+                    <td>Git提交</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="ch2-cursor" class="content-block">
+            <h2><span class="tool-badge cursor">Cursor</span> Commands</h2>
+            <h3>文件位置</h3>
+            <ul>
+              <li>项目: <code>.cursor/commands/*.md</code></li>
+              <li>全局: <code>~/.cursor/commands/*.md</code></li>
+              <li>团队: Dashboard 管理</li>
+            </ul>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.cursor/commands/code-review.md</span>
+              </div>
+              <pre><code># Code Review Checklist
+
+审查当前文件:
+1. 检查错误处理是否完整
+2. 验证输入参数校验
+3. 评估性能影响
+4. 检查安全问题
+5. 提出改进建议</code></pre>
+            </div>
+            <p><strong>使用</strong>: 在聊天中输入 <code>/code-review</code></p>
+          </div>
+
+          <div id="ch2-copilot" class="content-block">
+            <h2><span class="tool-badge copilot">Copilot</span> Prompt Files</h2>
+            <h3>启用方式</h3>
+            <ol>
+              <li>打开 Command Palette (Ctrl+Shift+P)</li>
+              <li>选择 "Open Workspace Settings (JSON)"</li>
+              <li>添加: <code>"chat.promptFiles": true</code></li>
+            </ol>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.github/prompts/refactor-ts.prompt.md</span></div>
+              <pre><code>将选中的代码重构为 TypeScript:
+
+- 添加完整的类型定义
+- 使用接口定义数据结构
+- 参考现有类型: [types](../../src/types/index.ts)
+- 保持原有功能不变</code></pre>
+            </div>
+            <p><strong>使用</strong>: 在 Chat 中点击附加上下文 → Prompt → 选择文件</p>
+          </div>
+
+          <div id="ch2-antigravity" class="content-block">
+            <h2><span class="tool-badge antigravity">Antigravity</span> Workflows</h2>
+            <h3>文件位置</h3>
+            <ul>
+              <li>项目: <code>.agent/workflows/*.md</code></li>
+              <li>全局: <code>~/.gemini/antigravity/workflows/*.md</code></li>
+            </ul>
+            <h3>// turbo 自动执行</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.agent/workflows/deploy.md</span></div>
+              <pre><code>---
+description: 部署到生产环境
+---
+
+1. 运行测试确保通过
+// turbo
+2. npm test
+
+3. 构建生产版本
+// turbo
+4. npm run build
+
+5. 部署到服务器
+// turbo
+6. npm run deploy:prod</code></pre>
+            </div>
+            <p><code>// turbo</code> 注解表示该步骤自动执行，无需用户确认。</p>
+          </div>
+        </section>
+
+        <!-- Chapter 3: Skills -->
+        <section id="ch3" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第三章</span>
+            <h1>技能系统 (Skills)</h1>
+          </div>
+
+          <p class="chapter-intro">Skills 遵循 Agent Skills 开放标准（由 GitHub、Anthropic、OpenAI 联合发起），使用 SKILL.md
+            封装领域知识。<strong>三款工具均已支持</strong>。</p>
+
+          <div class="content-block">
+            <h2>技能目录与触发方式</h2>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>工具</th>
+                    <th>项目级位置</th>
+                    <th>全局位置</th>
+                    <th>触发方式</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tool-badge cursor">Cursor</span></td>
+                    <td><code>.cursor/skills/</code>, <code>.claude/skills/</code></td>
+                    <td><code>~/.cursor/skills/</code></td>
+                    <td><code>/skill-name</code> 或 Agent自动判断</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tool-badge copilot">Copilot</span></td>
+                    <td><code>.github/skills/</code></td>
+                    <td>不支持全局</td>
+                    <td>Agent 根据上下文自动加载</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tool-badge antigravity">Antigravity</span></td>
+                    <td><code>.agent/skills/</code></td>
+                    <td><code>~/.gemini/antigravity/skills/</code></td>
+                    <td>在查看 SKILL.md 后自动应用</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="ch3-copilot" class="content-block">
+            <h2><span class="tool-badge copilot">Copilot</span> 技能详解 (2025年12月 GA)</h2>
+
+            <div class="alert-box info">
+              <strong>✅ Copilot 已原生支持 Agent Skills</strong>：自 2025 年 12 月起，GitHub Copilot 正式支持 SKILL.md 格式的技能系统。
+              技能可在 Copilot Coding Agent、Copilot CLI 和 VS Code Agent Mode 中使用。
+            </div>
+
+            <h3>文件位置</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">目录结构</span></div>
+              <pre><code>project/
+└── .github/
+    └── skills/
+        └── my-skill/
+            ├── SKILL.md        # 主指令文件 (必需)
+            ├── scripts/        # 辅助脚本 (可选)
+            └── examples/       # 参考实现 (可选)</code></pre>
+            </div>
+
+            <h3>SKILL.md 格式</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.github/skills/web-testing/SKILL.md</span></div>
+              <pre><code>---
+name: web-testing
+description: Web应用测试技能。当用户请求编写E2E测试、Playwright、Cypress相关内容时使用。
+---
+
+# Web Testing Skill
+
+## When to Use
+- 编写端到端测试
+- 配置 Playwright/Cypress
+- 测试 Web 表单交互
+
+## Instructions
+- 使用 Playwright 作为默认测试框架
+- 测试文件放在 tests/e2e/ 目录
+- 每个页面一个测试文件</code></pre>
+            </div>
+
+            <h3>触发方式</h3>
+            <p>Copilot 会根据用户的提示和 SKILL.md 的 <code>description</code> 自动判断是否加载技能，<strong>无需手动触发</strong>。</p>
+          </div>
+
+          <div id="ch3-cursor" class="content-block">
+            <h2><span class="tool-badge cursor">Cursor</span> 技能触发详解</h2>
+            <h3>自动发现</h3>
+            <p>Cursor 启动时自动扫描技能目录，将可用技能注册到 Agent。</p>
+
+            <h3>触发方式</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>方式</th>
+                    <th>操作</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>手动调用</strong></td>
+                    <td>在聊天中输入 <code>/skill-name</code></td>
+                    <td>直接执行技能指令</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Agent判断</strong></td>
+                    <td>根据 description 自动判断</td>
+                    <td>类似 Apply Intelligently 规则</td>
+                  </tr>
+                  <tr>
+                    <td><strong>搜索调用</strong></td>
+                    <td>输入 <code>/</code> 后搜索</td>
+                    <td>显示所有可用技能列表</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="ch3-antigravity" class="content-block">
+            <h2><span class="tool-badge antigravity">Antigravity</span> 技能激活</h2>
+            <p>当 Agent 执行任务时，会根据 SKILL.md 的 description 判断是否需要使用该技能。你也可以通过 <code>view_file</code> 工具主动查看技能文件来激活它。</p>
+
+            <h3>激活流程</h3>
+            <ol>
+              <li>将技能文件夹放入 <code>.agent/skills/</code></li>
+              <li>确保包含 <code>SKILL.md</code> 文件</li>
+              <li>Agent 根据任务上下文自动加载</li>
+            </ol>
+          </div>
+
+          <div class="content-block">
+            <h2>SKILL.md 标准格式</h2>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.agent/skills/code-review/SKILL.md</span></div>
+              <pre><code>---
+name: code-review
+description: 代码审查技能。当用户请求review、audit、检查代码质量时使用。
+---
+
+# Code Review Skill
+
+## When to Use
+- 用户请求代码审查
+- PR 合并前检查
+- 代码质量评估
+
+## Review Checklist
+1. **正确性**: 代码是否按预期工作？
+2. **边界情况**: 错误条件是否处理？
+3. **风格**: 是否符合项目规范？
+4. **性能**: 有无明显低效？
+
+## Output Format
+提供逐行注释，使用 markdown 格式输出。</code></pre>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <h2>技能目录结构</h2>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">完整目录结构</span></div>
+              <pre><code>.agent/skills/my-skill/
+├── SKILL.md        # 主指令文件 (必需)
+├── scripts/        # 辅助脚本 (可选)
+│   └── helper.py
+├── examples/       # 参考实现 (可选)
+│   └── sample.ts
+└── resources/      # 模板资源 (可选)
+    └── template.md</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chapter 4: Subagents -->
+        <section id="ch4" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第四章</span>
+            <h1>子智能体 (Subagents)</h1>
+          </div>
+
+          <p class="chapter-intro">Subagents 允许将复杂任务委派给专业化助手，每个子代理在独立上下文中运行。</p>
+
+          <div class="content-block">
+            <h2>三工具对比</h2>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>特性</th>
+                    <th><span class="tool-badge cursor">Cursor</span></th>
+                    <th><span class="tool-badge copilot">Copilot</span></th>
+                    <th><span class="tool-badge antigravity">Antigravity</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>名称</td>
+                    <td>Subagents</td>
+                    <td>Custom Agents</td>
+                    <td>Browser Subagent</td>
+                  </tr>
+                  <tr>
+                    <td>配置位置</td>
+                    <td>内置</td>
+                    <td><code>.github/agents/*.md</code></td>
+                    <td>内置</td>
+                  </tr>
+                  <tr>
+                    <td>并行执行</td>
+                    <td>支持</td>
+                    <td>不支持</td>
+                    <td>不支持</td>
+                  </tr>
+                  <tr>
+                    <td>上下文隔离</td>
+                    <td>独立窗口</td>
+                    <td>独立</td>
+                    <td>浏览器隔离</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="ch4-copilot" class="content-block">
+            <h2><span class="tool-badge copilot">Copilot</span> Custom Agent 配置</h2>
+
+            <div class="alert-box info">
+              <strong>💡 注意区分</strong>：Custom Agents（<code>.github/agents/*.md</code>）是可 @提及的专业角色，
+              与规则系统中的 AGENTS.md（项目指令文件）<strong>完全不同</strong>。
+              详见<a href="#ch1-copilot">第一章 Copilot 指令详解</a>中的辨析表格。
+            </div>
+            <div class="code-block">
+              <div class="code-block__header"><span
+                  class="code-block__language">.github/agents/test-specialist.md</span></div>
+              <pre><code>---
+name: test-specialist
+description: 专门编写和优化测试用例
+---
+
+You are a testing specialist focused on:
+- Writing comprehensive unit tests
+- Improving test coverage
+- Optimizing test performance
+
+Always use Jest with TypeScript.
+Follow AAA pattern: Arrange, Act, Assert.</code></pre>
+            </div>
+          </div>
+
+          <div id="ch4-antigravity" class="content-block">
+            <h2><span class="tool-badge antigravity">Antigravity</span> Browser Subagent 触发详解</h2>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>工具</th>
+                    <th>触发方式</th>
+                    <th>调用语法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tool-badge cursor">Cursor</span></td>
+                    <td>Agent 自动决定是否启动 Subagent</td>
+                    <td>无需手动调用，处理复杂任务时自动分配</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tool-badge copilot">Copilot</span></td>
+                    <td>在 Chat 中 @ 提及</td>
+                    <td><code>@agent-name 你的请求</code></td>
+                  </tr>
+                  <tr>
+                    <td><span class="tool-badge antigravity">Antigravity</span></td>
+                    <td>Agent 自动调用 browser_subagent 工具</td>
+                    <td>当需要浏览器操作时自动触发</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <h2>Copilot Custom Agent 调用示例</h2>
+            <h3>1. 创建 Agent 文件</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.github/agents/doc-writer.md</span>
+              </div>
+              <pre><code>---
+name: doc-writer
+description: 专门编写技术文档和 README
+---
+
+You are a documentation specialist.
+
+## Responsibilities
+- Write clear README files
+- Create API documentation
+- Generate usage examples
+
+## Style Guidelines
+- Use headings for structure
+- Include code examples
+- Write concise explanations</code></pre>
+            </div>
+
+            <h3>2. 在 Chat 中调用</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">Copilot Chat</span></div>
+              <pre><code>@doc-writer 请为这个项目生成 README.md</code></pre>
+            </div>
+          </div>
+
+          <div id="ch4-cursor" class="content-block">
+            <h2><span class="tool-badge cursor">Cursor</span> Subagent 使用场景</h2>
+            <ul>
+              <li><strong>代码库分析</strong>: 将不同模块分配给多个 Subagent 并行分析</li>
+              <li><strong>测试生成</strong>: 主 Agent 继续对话，Subagent 后台生成测试</li>
+              <li><strong>文档生成</strong>: 保持上下文隔离，不污染主对话窗口</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Chapter 5: Mentions -->
+        <section id="ch5" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第五章</span>
+            <h1>智能体提及 (Mentions)</h1>
+          </div>
+
+          <div id="ch5-cursor" class="content-block">
+            <h2>三工具 @ 引用对比</h2>
+            <p><span id="ch5-copilot"></span><span id="ch5-antigravity"></span></p>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>引用类型</th>
+                    <th><span class="tool-badge cursor">Cursor</span></th>
+                    <th><span class="tool-badge copilot">Copilot</span></th>
+                    <th><span class="tool-badge antigravity">Antigravity</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>文件</td>
+                    <td><code>@file</code></td>
+                    <td><code>#file:path</code></td>
+                    <td><code>@filename</code></td>
+                  </tr>
+                  <tr>
+                    <td>代码库</td>
+                    <td><code>@codebase</code></td>
+                    <td><code>@workspace</code></td>
+                    <td>自动索引</td>
+                  </tr>
+                  <tr>
+                    <td>文档</td>
+                    <td><code>@docs</code></td>
+                    <td><code>@github</code></td>
+                    <td>通过MCP</td>
+                  </tr>
+                  <tr>
+                    <td>网页</td>
+                    <td><code>@web</code></td>
+                    <td>不支持</td>
+                    <td>通过MCP</td>
+                  </tr>
+                  <tr>
+                    <td>规则</td>
+                    <td><code>@rule-name</code></td>
+                    <td>不支持</td>
+                    <td><code>@rule-name</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chapter 6: MCP -->
+        <section id="ch6" class="chapter-section">
+          <div class="chapter-header">
+            <span class="chapter-number">第六章</span>
+            <h1>模型上下文协议 (MCP)</h1>
+          </div>
+
+          <p class="chapter-intro">MCP (Model Context Protocol) 允许 AI Agent 连接外部工具和数据源。</p>
+
+          <div id="ch6-cursor" class="content-block">
+            <h2>配置方式对比</h2>
+            <p><span id="ch6-copilot"></span><span id="ch6-antigravity"></span></p>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>特性</th>
+                    <th><span class="tool-badge cursor">Cursor</span></th>
+                    <th><span class="tool-badge copilot">Copilot</span></th>
+                    <th><span class="tool-badge antigravity">Antigravity</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>配置文件</td>
+                    <td><code>.cursor/mcp.json</code></td>
+                    <td><code>.github/mcp.json</code></td>
+                    <td><code>mcp_config.json</code></td>
+                  </tr>
+                  <tr>
+                    <td>一键安装</td>
+                    <td>不支持</td>
+                    <td>不支持</td>
+                    <td>MCP Store</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <h2>MCP 配置示例</h2>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">mcp.json</span></div>
+              <pre><code>{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_URL": "postgresql://user:pass@localhost:5432/db"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "ghp_xxx"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="content-block">
+            <h2>Antigravity MCP Store</h2>
+            <p>支持的一键安装服务:</p>
+            <ul style="columns: 3; list-style: disc; padding-left: 20px;">
+              <li>GitHub</li>
+              <li>Firebase</li>
+              <li>Supabase</li>
+              <li>Neon</li>
+              <li>MongoDB</li>
+              <li>Redis</li>
+              <li>Notion</li>
+              <li>Linear</li>
+              <li>Figma</li>
+              <li>Stripe</li>
+              <li>BigQuery</li>
+              <li>Prisma</li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 12h18M3 6h18M3 18h18" />
+    </svg>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
