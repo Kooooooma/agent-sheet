@@ -136,7 +136,7 @@
                   <tr>
                     <td>全局/个人</td>
                     <td>Settings → Rules (User Rules)</td>
-                    <td>Profile → Personal Instructions</td>
+                    <td>VS Code: Personal Instructions<br>IDEA: <code>global-copilot-instructions.md</code></td>
                     <td><code>~/.gemini/GEMINI.md</code></td>
                   </tr>
                   <tr>
@@ -158,10 +158,10 @@
                     <td>通过Git共享</td>
                   </tr>
                   <tr>
-                    <td>优先级</td>
-                    <td>Team → Project → User</td>
-                    <td>Personal → Repository → Organization</td>
-                    <td>Workspace → Global</td>
+                    <td>优先级 (高→低)</td>
+                    <td>Team &gt; Project &gt; User</td>
+                    <td>Personal &gt; Repository &gt; Organization</td>
+                    <td>Workspace &gt; Global</td>
                   </tr>
                 </tbody>
               </table>
@@ -692,7 +692,31 @@ Code Review 功能不会使用。</code></pre>
               <li>项目: <code>.agent/workflows/*.md</code></li>
               <li>全局: <code>~/.gemini/antigravity/workflows/*.md</code></li>
             </ul>
-            <h3>// turbo 自动执行</h3>
+            <h3>Turbo 自动执行注解</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>注解</th>
+                    <th>作用范围</th>
+                    <th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>// turbo</code></td>
+                    <td>单步</td>
+                    <td>放在步骤上一行，仅该步骤自动执行</td>
+                  </tr>
+                  <tr>
+                    <td><code>// turbo-all</code></td>
+                    <td>全文件</td>
+                    <td>放在文件任意位置，所有命令自动执行</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>示例：单步自动执行</h3>
             <div class="code-block">
               <div class="code-block__header"><span class="code-block__language">.agent/workflows/deploy.md</span></div>
               <pre><code>---
@@ -705,13 +729,21 @@ description: 部署到生产环境
 
 3. 构建生产版本
 // turbo
-4. npm run build
-
-5. 部署到服务器
-// turbo
-6. npm run deploy:prod</code></pre>
+4. npm run build</code></pre>
             </div>
-            <p><code>// turbo</code> 注解表示该步骤自动执行，无需用户确认。</p>
+            <h3>示例：全部自动执行</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.agent/workflows/quick-test.md</span>
+              </div>
+              <pre><code>---
+description: 快速测试流程
+---
+// turbo-all
+
+1. npm install
+2. npm test
+3. npm run lint</code></pre>
+            </div>
           </div>
         </section>
 
@@ -1153,9 +1185,10 @@ You are a documentation specialist.
           </div>
 
           <div class="content-block">
-            <h2>MCP 配置示例</h2>
+            <h2><span class="tool-badge cursor">Cursor</span> MCP 配置</h2>
+            <h3>项目级配置</h3>
             <div class="code-block">
-              <div class="code-block__header"><span class="code-block__language">mcp.json</span></div>
+              <div class="code-block__header"><span class="code-block__language">.cursor/mcp.json</span></div>
               <pre><code>{
   "mcpServers": {
     "postgres": {
@@ -1164,7 +1197,21 @@ You are a documentation specialist.
       "env": {
         "POSTGRES_URL": "postgresql://user:pass@localhost:5432/db"
       }
-    },
+    }
+  }
+}</code></pre>
+            </div>
+            <h3>全局配置</h3>
+            <p>在 <code>~/.cursor/mcp.json</code> 中配置，对所有项目生效。</p>
+          </div>
+
+          <div class="content-block">
+            <h2><span class="tool-badge copilot">Copilot</span> MCP 配置</h2>
+            <h3>VS Code 项目级配置</h3>
+            <div class="code-block">
+              <div class="code-block__header"><span class="code-block__language">.vscode/mcp.json</span></div>
+              <pre><code>{
+  "mcpServers": {
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
@@ -1175,6 +1222,8 @@ You are a documentation specialist.
   }
 }</code></pre>
             </div>
+            <h3>VS Code 全局配置</h3>
+            <p>在 <code>settings.json</code> 中添加 MCP 配置，或通过 GitHub.com 仓库设置界面配置。</p>
           </div>
 
           <div class="content-block">
