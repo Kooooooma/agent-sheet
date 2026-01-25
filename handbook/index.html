@@ -82,18 +82,15 @@
         <div class="sidebar__title">第四章</div>
         <ul class="sidebar__nav">
           <li><a href="#ch4" class="sidebar__link">子智能体</a></li>
-          <li><a href="#ch4-cursor" class="sidebar__sublink">Cursor Subagents</a></li>
           <li><a href="#ch4-copilot" class="sidebar__sublink">Copilot Custom Agents</a></li>
           <li><a href="#ch4-antigravity" class="sidebar__sublink">Antigravity Browser Agent</a></li>
+          <li><a href="#ch4-cursor" class="sidebar__sublink">Cursor Subagents</a></li>
         </ul>
       </div>
       <div class="sidebar__section">
         <div class="sidebar__title">第五章</div>
         <ul class="sidebar__nav">
           <li><a href="#ch5" class="sidebar__link">Mentions</a></li>
-          <li><a href="#ch5-cursor" class="sidebar__sublink">Cursor @引用</a></li>
-          <li><a href="#ch5-copilot" class="sidebar__sublink">Copilot #引用</a></li>
-          <li><a href="#ch5-antigravity" class="sidebar__sublink">Antigravity @引用</a></li>
         </ul>
       </div>
       <div class="sidebar__section">
@@ -118,7 +115,21 @@
             <h1>规则系统 (Rules)</h1>
           </div>
 
-          <p class="chapter-intro">规则为 Agent 提供系统级指令，在提示级别提供持久、可重用的上下文。三款工具都支持多层级规则，但配置方式不同。</p>
+          <p class="chapter-intro">规则为 Agent 提供系统级指令，在提示级别提供持久、可复用的上下文。它们是确保 AI
+            行为一致性、遵循项目规范和提高开发效率的关键。三款工具都支持多层级规则，但配置方式和侧重点有所不同。</p>
+
+          <div class="content-block">
+            <h2>为什么需要规则？</h2>
+            <p>大语言模型在不同对话之间不会保留记忆。规则在提示级别提供持久、可复用的上下文，确保 AI 在生成代码、理解编辑或协助工作流程时获得一致的指导。</p>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>编码风格统一</strong>：定义团队使用的命名规范、代码格式、注释要求等</li>
+              <li><strong>项目架构指导</strong>：说明项目的文件结构、依赖关系、分层架构等</li>
+              <li><strong>技术栈限制</strong>：指定使用的框架、库版本、构建工具等</li>
+              <li><strong>测试标准</strong>：定义测试框架、覆盖率要求、测试文件位置等</li>
+              <li><strong>团队协作规范</strong>：PR 描述模板、commit message 格式、分支命名等</li>
+            </ul>
+          </div>
 
           <div class="content-block">
             <h2>三工具规则层级对比</h2>
@@ -582,6 +593,20 @@ Code Review 功能不会使用。</code></pre>
           <p class="chapter-intro">命令系统允许封装可复用的提示工作流，通过简单的前缀触发。三款工具实现方式不同。</p>
 
           <div class="content-block">
+            <h2>为什么需要命令/工作流？</h2>
+            <p>命令将常用的操作序列打包成可复用的模板，避免每次都输入相同的提示词。这不仅提高了效率，还确保了团队成员使用统一的最佳实践。</p>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>代码审查</strong>：<code>/code-review</code> 自动执行代码质量检查清单</li>
+              <li><strong>创建 PR</strong>：<code>/create-pr</code> 生成标准格式的 Pull Request</li>
+              <li><strong>运行测试</strong>：<code>/test-and-fix</code> 运行测试并自动修复失败的用例</li>
+              <li><strong>安全审计</strong>：<code>/security-audit</code> 检查常见安全漏洞</li>
+              <li><strong>部署流程</strong>：<code>/deploy</code> 按步骤执行生产环境部署</li>
+              <li><strong>新功能搭建</strong>：<code>/setup-feature</code> 初始化新功能的文件结构</li>
+            </ul>
+          </div>
+
+          <div class="content-block">
             <h2>三工具命令对比</h2>
             <div class="comparison-table">
               <table>
@@ -603,7 +628,7 @@ Code Review 功能不会使用。</code></pre>
                   <tr>
                     <td>触发方式</td>
                     <td><code>/command-name</code></td>
-                    <td>附加上下文选择</td>
+                    <td><code>/prompt-name</code> 或附加上下文</td>
                     <td><code>/workflow-name</code></td>
                   </tr>
                   <tr>
@@ -666,31 +691,96 @@ Code Review 功能不会使用。</code></pre>
 
           <div id="ch2-copilot" class="content-block">
             <h2><span class="tool-badge copilot">Copilot</span> Prompt Files</h2>
+
+            <div class="alert-box info">
+              <strong>⚠️ Public Preview</strong>：Prompt Files 目前处于公开预览阶段，在 VS Code、Visual Studio 和 JetBrains IDE 中可用。
+            </div>
+
             <h3>启用方式</h3>
-            <ol>
-              <li>打开 Command Palette (Ctrl+Shift+P)</li>
-              <li>选择 "Open Workspace Settings (JSON)"</li>
-              <li>添加: <code>"chat.promptFiles": true</code></li>
-            </ol>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>IDE</th>
+                    <th>启用方法</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>VS Code</strong></td>
+                    <td>Settings (JSON) 添加: <code>"chat.promptFiles": true</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>JetBrains IDE</strong></td>
+                    <td>默认启用，无需额外配置</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Visual Studio</strong></td>
+                    <td>默认启用，无需额外配置</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>文件位置</h3>
+            <p>所有 IDE 使用相同的文件位置：<code>.github/prompts/*.prompt.md</code></p>
+
+            <h3>文件格式</h3>
             <div class="code-block">
               <div class="code-block__header"><span
-                  class="code-block__language">.github/prompts/refactor-ts.prompt.md</span></div>
-              <pre><code>将选中的代码重构为 TypeScript:
+                  class="code-block__language">.github/prompts/explain-code.prompt.md</span></div>
+              <pre><code>---
+agent: 'agent'
+description: 'Generate a clear code explanation with examples'
+---
 
-- 添加完整的类型定义
-- 使用接口定义数据结构
-- 参考现有类型: [types](../../src/types/index.ts)
-- 保持原有功能不变</code></pre>
+Explain the following code in a clear, beginner-friendly way:
+
+Code to explain: ${input:code:Paste your code here}
+Target audience: ${input:audience:Who is this for?}
+
+Please provide:
+* A brief overview of what the code does
+* Step-by-step breakdown of the main parts
+* Common use cases</code></pre>
             </div>
-            <p><strong>使用</strong>: 在 Chat 中点击附加上下文 → Prompt → 选择文件</p>
+
+            <h3>触发方式</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>IDE</th>
+                    <th>触发方式</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>VS Code</strong></td>
+                    <td>Chat 中输入 <code>/prompt-name</code> 或附加上下文 → Prompt</td>
+                  </tr>
+                  <tr>
+                    <td><strong>JetBrains IDE</strong></td>
+                    <td>Chat 中输入 <code>#prompt:</code> 显示可用列表，选择后使用</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>文件引用语法</h3>
+            <ul>
+              <li>Markdown link: <code>[index](../../web/index.ts)</code></li>
+              <li>#file 语法: <code>#file:../../web/index.ts</code></li>
+              <li>输入变量: <code>${input:name:placeholder}</code></li>
+            </ul>
           </div>
+
 
           <div id="ch2-antigravity" class="content-block">
             <h2><span class="tool-badge antigravity">Antigravity</span> Workflows</h2>
             <h3>文件位置</h3>
             <ul>
               <li>项目: <code>.agent/workflows/*.md</code></li>
-              <li>全局: <code>~/.gemini/antigravity/workflows/*.md</code></li>
             </ul>
             <h3>Turbo 自动执行注解</h3>
             <div class="comparison-table">
@@ -758,6 +848,48 @@ description: 快速测试流程
             封装领域知识。<strong>三款工具均已支持</strong>。</p>
 
           <div class="content-block">
+            <h2>为什么需要技能？</h2>
+            <p>Skills 是一种可移植、受版本控制的知识包，用于教会 Agent 如何执行特定领域的任务。与规则不同，技能更侧重于“如何做”而不是“遵循什么”。</p>
+            <h3>Rules vs Skills 的关键区别</h3>
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>对比项</th>
+                    <th>Rules (规则)</th>
+                    <th>Skills (技能)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>用途</td>
+                    <td>行为约束、编码风格</td>
+                    <td>特定任务的执行方法</td>
+                  </tr>
+                  <tr>
+                    <td>触发</td>
+                    <td>自动/文件匹配/手动</td>
+                    <td>Agent 根据上下文自动选择</td>
+                  </tr>
+                  <tr>
+                    <td>内容</td>
+                    <td>简短指令 (≤500行)</td>
+                    <td>详细步骤 + 脚本 + 示例</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>Web 测试技能</strong>：封装 Playwright/Cypress 测试最佳实践</li>
+              <li><strong>代码审查技能</strong>：定义完整的审查清单和输出格式</li>
+              <li><strong>数据库迁移技能</strong>：封装数据库 schema 变更流程</li>
+              <li><strong>API 设计技能</strong>：包含 RESTful 或 GraphQL 设计规范</li>
+              <li><strong>文档生成技能</strong>：自动生成 API 文档、README 等</li>
+            </ul>
+          </div>
+
+          <div class="content-block">
             <h2>技能目录与触发方式</h2>
             <div class="comparison-table">
               <table>
@@ -778,8 +910,8 @@ description: 快速测试流程
                   </tr>
                   <tr>
                     <td><span class="tool-badge copilot">Copilot</span></td>
-                    <td><code>.github/skills/</code></td>
-                    <td>不支持全局</td>
+                    <td><code>.github/skills/</code>, <code>.claude/skills/</code></td>
+                    <td><code>~/.copilot/skills/</code> (仅 Coding Agent/CLI)</td>
                     <td>Agent 根据上下文自动加载</td>
                   </tr>
                   <tr>
@@ -941,6 +1073,26 @@ description: 代码审查技能。当用户请求review、audit、检查代码�
           <p class="chapter-intro">Subagents 允许将复杂任务委派给专业化助手，每个子代理在独立上下文中运行。</p>
 
           <div class="content-block">
+            <h2>为什么需要子智能体？</h2>
+            <p>子智能体解决了两个核心问题：<strong>上下文窗口限制</strong>和<strong>串行执行效率</strong>。复杂任务可以拆分给多个专业化的子代理并行处理，而不占用主会话的上下文空间。</p>
+            <h3>关键优势</h3>
+            <ul>
+              <li><strong>上下文隔离</strong>：每个子代理有独立的上下文窗口，耗时的调研任务不会占用主会话空间</li>
+              <li><strong>并行执行</strong>：同时启动多个子代理，在代码库不同部分并行工作</li>
+              <li><strong>专业能力</strong>：为子代理配置特定领域的提示词、工具和模型</li>
+              <li><strong>可复用</strong>：自定义子代理可在多个项目之间复用</li>
+            </ul>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>代码库分析</strong>：将不同模块分配给多个子代理并行分析</li>
+              <li><strong>验证代理</strong>：独立验证已完成的工作是否符合预期</li>
+              <li><strong>测试生成</strong>：后台生成测试，主会话继续其他工作</li>
+              <li><strong>文档生成</strong>：保持上下文隔离，不污染主对话窗口</li>
+              <li><strong>安全审计</strong>：专业的安全审计员子代理检查漏洞</li>
+            </ul>
+          </div>
+
+          <div class="content-block">
             <h2>三工具对比</h2>
             <div class="comparison-table">
               <table>
@@ -961,7 +1113,7 @@ description: 代码审查技能。当用户请求review、audit、检查代码�
                   </tr>
                   <tr>
                     <td>配置位置</td>
-                    <td>内置</td>
+                    <td><code>.cursor/agents/</code></td>
                     <td><code>.github/agents/*.md</code></td>
                     <td>内置</td>
                   </tr>
@@ -1088,6 +1240,21 @@ You are a documentation specialist.
             <h1>智能体提及 (Mentions)</h1>
           </div>
 
+          <p class="chapter-intro">Mentions 允许你在对话中快速引用文件、代码、文档等上下文，让 Agent 准确理解你的意图。</p>
+
+          <div class="content-block">
+            <h2>为什么需要 Mentions？</h2>
+            <p>AI 需要精确的上下文才能给出准确的回答。Mentions 让你能够快速将文件、代码片段、整个代码库或外部文档加入到对话上下文中。</p>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>引用文件</strong>：<code>@file</code> 让 Agent 看到指定文件的完整内容</li>
+              <li><strong>引用代码片段</strong>：<code>@Code</code> 引用特定函数或类，比整个文件更精确</li>
+              <li><strong>搜索代码库</strong>：<code>@codebase</code> 让 Agent 在整个项目中搜索相关代码</li>
+              <li><strong>查阅文档</strong>：<code>@docs</code> 让 Agent 查阅框架/库的官方文档</li>
+              <li><strong>引用规则</strong>：<code>@rule-name</code> 手动触发特定规则</li>
+            </ul>
+          </div>
+
           <div id="ch5-cursor" class="content-block">
             <h2>三工具 @ 引用对比</h2>
             <p><span id="ch5-copilot"></span><span id="ch5-antigravity"></span></p>
@@ -1122,7 +1289,7 @@ You are a documentation specialist.
                   </tr>
                   <tr>
                     <td>网页</td>
-                    <td><code>@web</code></td>
+                    <td>已废弃 (2.0移除)</td>
                     <td>不支持</td>
                     <td>通过MCP</td>
                   </tr>
@@ -1145,11 +1312,28 @@ You are a documentation specialist.
             <h1>模型上下文协议 (MCP)</h1>
           </div>
 
-          <p class="chapter-intro">MCP (Model Context Protocol) 允许 AI Agent 连接外部工具和数据源。</p>
+          <p class="chapter-intro">MCP (Model Context Protocol) 允许 AI Agent 连接外部工具和数据源，扩展其能力边界。</p>
 
-          <div id="ch6-cursor" class="content-block">
+          <div class="content-block">
+            <h2>为什么需要 MCP？</h2>
+            <p>MCP 作为 AI 与外部工具之间的桥梁，无需手动复制粘贴上下文（如数据库 schema、日志等），Agent 可以直接读取并操作这些资源。</p>
+            <h3>核心能力</h3>
+            <ul>
+              <li><strong>上下文资源</strong>：AI 可以读取连接的 MCP 服务器的数据（如数据库 schema、构建日志等）</li>
+              <li><strong>自定义工具</strong>：MCP 允许 Agent 执行安全的操作（如创建 Linear issue、搜索 Notion 等）</li>
+            </ul>
+            <h3>常见应用场景</h3>
+            <ul>
+              <li><strong>数据库集成</strong>：连接 PostgreSQL/MongoDB，编写 SQL 时自动获取正确的表名和字段</li>
+              <li><strong>项目管理</strong>：集成 Linear/Jira，自动创建 issue 或更新状态</li>
+              <li><strong>设计系统</strong>：集成 Figma，直接获取设计稿信息</li>
+              <li><strong>知识库</strong>：集成 Notion，搜索团队文档和最佳实践</li>
+              <li><strong>云服务</strong>：集成 Firebase/Supabase/Stripe 等云服务</li>
+            </ul>
+          </div>
+
+          <div class="content-block">
             <h2>配置方式对比</h2>
-            <p><span id="ch6-copilot"></span><span id="ch6-antigravity"></span></p>
             <div class="comparison-table">
               <table>
                 <thead>
@@ -1184,7 +1368,7 @@ You are a documentation specialist.
             </div>
           </div>
 
-          <div class="content-block">
+          <div id="ch6-cursor" class="content-block">
             <h2><span class="tool-badge cursor">Cursor</span> MCP 配置</h2>
             <h3>项目级配置</h3>
             <div class="code-block">
@@ -1205,7 +1389,7 @@ You are a documentation specialist.
             <p>在 <code>~/.cursor/mcp.json</code> 中配置，对所有项目生效。</p>
           </div>
 
-          <div class="content-block">
+          <div id="ch6-copilot" class="content-block">
             <h2><span class="tool-badge copilot">Copilot</span> MCP 配置</h2>
             <h3>VS Code 项目级配置</h3>
             <div class="code-block">
@@ -1226,8 +1410,8 @@ You are a documentation specialist.
             <p>在 <code>settings.json</code> 中添加 MCP 配置，或通过 GitHub.com 仓库设置界面配置。</p>
           </div>
 
-          <div class="content-block">
-            <h2>Antigravity MCP Store</h2>
+          <div id="ch6-antigravity" class="content-block">
+            <h2><span class="tool-badge antigravity">Antigravity</span> MCP Store</h2>
             <p>支持的一键安装服务:</p>
             <ul style="columns: 3; list-style: disc; padding-left: 20px;">
               <li>GitHub</li>
@@ -1245,6 +1429,8 @@ You are a documentation specialist.
             </ul>
           </div>
         </section>
+
+
 
       </div>
     </main>

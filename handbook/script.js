@@ -146,9 +146,10 @@
             if (target) {
                 e.preventDefault();
 
-                // Calculate offset for fixed nav
+                // Calculate offset for fixed nav using getBoundingClientRect for accurate position
                 const navHeight = document.querySelector('.nav')?.offsetHeight || 0;
-                const targetPosition = target.offsetTop - navHeight;
+                const targetRect = target.getBoundingClientRect();
+                const targetPosition = targetRect.top + window.pageYOffset - navHeight - 20;
 
                 window.scrollTo({
                     top: targetPosition,
@@ -161,6 +162,7 @@
         });
     });
 })();
+
 
 // ========== SCROLL ANIMATIONS ==========
 (function initScrollAnimations() {
